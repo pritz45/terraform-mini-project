@@ -26,5 +26,11 @@ jobs:
    start:
        runs-on: self-hosted
        steps:
+         - name: GHCR login
+           run: echo "${{env.gh_pat}}" | docker login ghcr.io -u ${{github.actor}} --password-stdin
+
+         - name: Pull Image
+           run: docker pull ghcr.io/${{github.actor}}/nginx:latest
+           
          - name: Run Container
            run: docker run --name nginx-container -d -p 80:80 ghcr.io/${{github.actor}}/nginx:latest
