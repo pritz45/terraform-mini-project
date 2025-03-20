@@ -22,3 +22,9 @@ jobs:
 
         - name: push to ghcr
           run: docker push ghcr.io/${{github.actor}}/nginx:latest
+          
+   start:
+       runs-on: self-hosted
+       steps:
+         - name: Run Container
+           run: docker run --name nginx-container -d -p 80:80 ghcr.io/${{github.actor}}/nginx:latest
