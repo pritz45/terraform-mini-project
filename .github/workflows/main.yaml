@@ -1,0 +1,24 @@
+name: CI for Mini Project
+on:
+  push:
+    branches:
+        - master
+
+env:
+   gh_pat: ${{secrets.GH_PAT}}
+   
+jobs:
+   build:
+      runs-on: ubuntu-latest
+      steps:
+        - name: chekout
+          uses: actions/checkout@v3
+
+        - name: GHCR login
+          run: echo "${{env.gh_pat}}" | docker login ghcr.io -u ${{github.actor}} --password-stdin
+
+        - name: Build Image
+          run: docker build -t ghcr.io/${{github.actor}}/nginx:latest .
+
+        - name: push to ghcr
+          run: docker push ghcr.io/${{github.actor}}/nginx:latest
